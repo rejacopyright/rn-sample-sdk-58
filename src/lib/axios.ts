@@ -9,7 +9,7 @@ const axios = create({
   headers: { Accept: 'application/json', 'Content-Type': 'application/json' },
 })
 
-// REQUEST: sisipkan token dari store (kalau ada)
+// REQUEST: attach the token from the store (if any)
 axios.interceptors.request.use(
   (req) => {
     const token = authStore.getState().token
@@ -23,7 +23,7 @@ axios.interceptors.request.use(
   (error) => Promise.reject(error),
 )
 
-// RESPONSE: logout otomatis kalau 401
+// RESPONSE: log out automatically on 401
 axios.interceptors.response.use(
   (res) => res,
   (error: AxiosError<{ message?: string }>) => {
@@ -35,11 +35,11 @@ axios.interceptors.response.use(
   },
 )
 
-// Ambil pesan error yang ramah dari error axios
+// Extract a friendly message from an axios error
 export const getErrorMessage = (error: unknown) => {
   const err = error as AxiosError<{ message?: string }>
 
-  return err?.response?.data?.message || err?.message || 'Terjadi kesalahan'
+  return err?.response?.data?.message || err?.message || 'Something went wrong'
 }
 
 export default axios

@@ -10,8 +10,8 @@ type AuthState = {
 }
 
 // Penamaan tanpa prefix "use": authStore (bukan useAuth)
-// Di komponen : const token = authStore((s) => s.token)
-// Di luar React: authStore.getState().token
+// In a component: const token = authStore((s) => s.token)
+// Outside React: authStore.getState().token
 export const authStore = create<AuthState>()(
   persist(
     (set) => ({

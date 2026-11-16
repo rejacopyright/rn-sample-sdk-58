@@ -1,8 +1,8 @@
 import { StyleSheet } from 'react-native-unistyles'
 
-// Style global yang bisa dipakai ulang di mana saja (seperti utility / global CSS di web).
-// Pemakaian: <View style={common.screen} />
-// Digabung dengan style lokal: <View style={[common.card, styles.item]} />
+// Global styles that can be reused anywhere (like utility / global CSS on the web).
+// Usage: <View style={common.screen} />
+// Combined with a local style: <View style={[common.card, styles.item]} />
 export const common = StyleSheet.create((theme) => ({
   screen: { flex: 1, backgroundColor: theme.colors.background },
   center: { marginTop: 32 },

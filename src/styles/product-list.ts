@@ -1,9 +1,9 @@
 import { StyleSheet } from 'react-native-unistyles'
 
-// Style khusus grid produk, dipakai bersama oleh FlatList / FlashList / LegendList
+// Styles specific to the product grid, shared by FlatList / FlashList / LegendList
 export const productList = StyleSheet.create({
-  // padding 10 + padding 6 di tiap kartu = jarak 16 dari tepi layar
+  // 10 padding + 6 padding on each card = 16 from the screen edge
   content: { paddingHorizontal: 10, paddingBottom: 16 },
-  // FlatList saja: supaya item ganjil di baris terakhir tidak melebar
+  // FlatList only: so an odd item in the last row does not stretch
   flatListColumn: { flex: 1, maxWidth: '50%' },
 })
