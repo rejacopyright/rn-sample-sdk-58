@@ -2,7 +2,7 @@ import axios from '@/lib/axios'
 import type { Product, ProductInput, ProductList, ProductParams } from '@/types/product'
 import { useInfiniteQuery, useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
 
-const PAGE_SIZE = 10
+const PAGE_SIZE = 8
 
 // Endpoint dummyjson berbeda tergantung filter (search / category / semua)
 const getListUrl = ({ q, category }: ProductParams) => {

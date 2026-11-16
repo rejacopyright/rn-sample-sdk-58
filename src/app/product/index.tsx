@@ -1,12 +1,15 @@
 import { getProducts } from '@/api/product'
+import { ProductCard } from '@/components/product-card'
+import { ProductHeader } from '@/components/product-header'
+import { ResetCacheFab } from '@/components/reset-cache-fab'
 import { getErrorMessage } from '@/lib/axios'
 import { favoriteStore } from '@/store/favorite'
-import { Image } from 'expo-image'
 import { useState } from 'react'
-import { ActivityIndicator, FlatList, Pressable, Text, TextInput, View } from 'react-native'
+import { ActivityIndicator, FlatList, Text, View } from 'react-native'
 import { StyleSheet } from 'react-native-unistyles'
 
-export default function Product() {
+// VERSI 1: FlatList bawaan React Native
+export default function ProductFlatList() {
   const [search, setSearch] = useState('')
   const { data, isLoading, error, fetchNextPage, hasNextPage, isFetchingNextPage, refetch } =
     getProducts({ q: search || undefined })
@@ -16,65 +19,45 @@ export default function Product() {
 
   return (
     <View style={styles.container}>
-      <TextInput
-        style={styles.search}
-        placeholder='Cari produk...'
-        placeholderTextColor='#888'
-        value={search}
-        onChangeText={setSearch}
-      />
+      <ProductHeader search={search} onSearch={setSearch} active='FlatList' />
 
       {isLoading ? (
         <ActivityIndicator style={styles.center} />
       ) : error ? (
-        <Text style={styles.text}>{getErrorMessage(error)}</Text>
+        <Text style={styles.error}>{getErrorMessage(error)}</Text>
       ) : (
         <FlatList
           data={data}
+          numColumns={2}
+          contentContainerStyle={styles.list}
           keyExtractor={(item) => String(item.id)}
           onEndReached={() => hasNextPage && !isFetchingNextPage && fetchNextPage()}
           onEndReachedThreshold={0.5}
           onRefresh={refetch}
           refreshing={false}
           ListFooterComponent={isFetchingNextPage ? <ActivityIndicator /> : undefined}
+          // flex + maxWidth: supaya item ganjil di baris terakhir tidak melebar
           renderItem={({ item }) => (
-            <View style={styles.card}>
-              <Image source={item.thumbnail} style={styles.image} />
-              <View style={styles.info}>
-                <Text style={styles.title}>{item.title}</Text>
-                <Text style={styles.text}>${item.price}</Text>
-              </View>
-              <Pressable onPress={() => toggleFavorite(item.id)}>
-                <Text style={styles.heart}>{favorites.includes(item.id) ? '♥' : '♡'}</Text>
-              </Pressable>
+            <View style={styles.column}>
+              <ProductCard
+                item={item}
+                isFavorite={favorites.includes(item.id)}
+                onToggleFavorite={toggleFavorite}
+              />
             </View>
           )}
         />
       )}
+
+      <ResetCacheFab />
     </View>
   )
 }
 
 const styles = StyleSheet.create((theme) => ({
-  container: {
-    flex: 1,
-    backgroundColor: theme.colors.background,
-    paddingTop: 60,
-    paddingHorizontal: 16,
-  },
+  container: { flex: 1, backgroundColor: theme.colors.background },
   center: { marginTop: 32 },
-  search: {
-    borderWidth: 1,
-    borderColor: '#8884',
-    borderRadius: 10,
-    padding: 12,
-    marginBottom: 12,
-    color: theme.colors.text,
-  },
-  card: { flexDirection: 'row', alignItems: 'center', gap: 12, paddingVertical: 8 },
-  image: { width: 64, height: 64, borderRadius: 8 },
-  info: { flex: 1 },
-  title: { color: theme.colors.text, fontWeight: '600' },
-  text: { color: theme.colors.text },
-  heart: { fontSize: 24, color: theme.colors.text },
+  error: { color: theme.colors.text, padding: 16 },
+  list: { paddingHorizontal: 10, paddingBottom: 16 },
+  column: { flex: 1, maxWidth: '50%' },
 }))
