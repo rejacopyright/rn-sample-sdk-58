@@ -8,4 +8,10 @@ module.exports = defineConfig([
   {
     ignores: ['dist/*', '.expo/*'],
   },
+  {
+    // Fungsi di src/api sengaja tanpa prefix "use" (getProducts, createProduct, dst)
+    // supaya tidak tertukar dengan hooks murni, jadi aturan ini dimatikan khusus folder ini.
+    files: ['src/api/**/*.{ts,tsx}'],
+    rules: { 'react-hooks/rules-of-hooks': 'off' },
+  },
 ])
