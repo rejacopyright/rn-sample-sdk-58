@@ -1,5 +1,11 @@
+import type { CollapsingHeader } from '@/hooks/use-collapsing-header'
+import { filterStore } from '@/store/filter'
+import type { BottomSheetModal } from '@gorhom/bottom-sheet'
 import { Link } from 'expo-router'
-import { Text, TextInput, View } from 'react-native'
+import { useRef } from 'react'
+import { Pressable, Text, TextInput, View } from 'react-native'
+import { CategoryFilterSheet } from './category-filter-sheet'
+import { CollapsibleHeader } from './collapsible-header'
 import { styles } from './product-header.styles'
 
 const tabs = [
@@ -12,26 +18,49 @@ type Props = {
   search: string
   onSearch: (text: string) => void
   active: (typeof tabs)[number]['label']
+  header: CollapsingHeader
 }
 
-// Kolom cari + pindah antar versi list (hanya untuk keperluan perbandingan)
-export function ProductHeader({ search, onSearch, active }: Props) {
+// Pinned: search field + filter button. Collapsible: switcher between list versions (comparison only)
+export function ProductHeader({ search, onSearch, active, header }: Props) {
+  const sheetRef = useRef<BottomSheetModal>(null)
+  const hasFilter = !!filterStore((s) => s.category)
+
   return (
-    <View style={styles.container}>
-      <TextInput
-        style={styles.search}
-        placeholder='Cari produk...'
-        placeholderTextColor='#888'
-        value={search}
-        onChangeText={onSearch}
-      />
+    <CollapsibleHeader
+      header={header}
+      pinned={
+        <View style={styles.pinned}>
+          <View style={styles.searchRow}>
+            <TextInput
+              style={styles.search}
+              placeholder='Search products...'
+              placeholderTextColor='#888'
+              value={search}
+              onChangeText={onSearch}
+            />
+            <Pressable
+              accessibilityLabel='Filter by category'
+              style={styles.filter(hasFilter)}
+              onPress={() => sheetRef.current?.present()}
+            >
+              <Text style={styles.filterText(hasFilter)}>☰</Text>
+            </Pressable>
+          </View>
+          <CategoryFilterSheet ref={sheetRef} />
+        </View>
+      }
+    >
       <View style={styles.tabs}>
         {tabs.map((tab) => (
-          <Link key={tab.label} href={tab.href} replace style={styles.tab(tab.label === active)}>
-            <Text style={styles.tabText(tab.label === active)}>{tab.label}</Text>
+          // asChild: Pressable handles the press, so the label is a plain Text (not selectable)
+          <Link key={tab.label} href={tab.href} replace asChild>
+            <Pressable style={styles.tab(tab.label === active)}>
+              <Text style={styles.tabText(tab.label === active)}>{tab.label}</Text>
+            </Pressable>
           </Link>
         ))}
       </View>
-    </View>
+    </CollapsibleHeader>
   )
 }

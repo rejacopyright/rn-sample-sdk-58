@@ -1,31 +1,43 @@
-import { getProducts } from '@/api/product'
+import { getProducts, refreshProducts } from '@/api/product'
 import { ProductCard } from '@/components/product-card'
+import { ProductBanner } from '@/components/product-banner'
 import { ProductHeader } from '@/components/product-header'
+import { RefreshIndicator } from '@/components/refresh-indicator'
 import { ResetCacheFab } from '@/components/reset-cache-fab'
+import { useCollapsingHeader } from '@/hooks/use-collapsing-header'
+import { useRefresh } from '@/hooks/use-refresh'
 import { getErrorMessage } from '@/lib/axios'
 import { favoriteStore } from '@/store/favorite'
+import { filterStore } from '@/store/filter'
 import { common } from '@/styles/common'
 import { productList } from '@/styles/product-list'
 import { useState } from 'react'
 import { ActivityIndicator, FlatList, Text, View } from 'react-native'
 
-// VERSI 1: FlatList bawaan React Native
+// VERSION 1: built-in React Native FlatList
 export default function ProductFlatList() {
   const [search, setSearch] = useState('')
-  const { data, isLoading, error, fetchNextPage, hasNextPage, isFetchingNextPage, refetch } =
-    getProducts({ q: search || undefined })
+  const category = filterStore((s) => s.category)
+  const { data, isLoading, error, fetchNextPage, hasNextPage, isFetchingNextPage } = getProducts({
+    q: search || undefined,
+    category,
+  })
+  const { refreshing, onRefresh } = useRefresh(refreshProducts())
+  const header = useCollapsingHeader()
 
   const favorites = favoriteStore((s) => s.ids)
   const toggleFavorite = favoriteStore((s) => s.toggle)
 
   return (
     <View style={common.screen}>
-      <ProductHeader search={search} onSearch={setSearch} active='FlatList' />
+      <ProductHeader search={search} onSearch={setSearch} header={header} active='FlatList' />
 
       {isLoading ? (
-        <ActivityIndicator style={common.center} />
+        <ActivityIndicator style={[common.center, { marginTop: header.height + 32 }]} />
       ) : error ? (
-        <Text style={common.errorText}>{getErrorMessage(error)}</Text>
+        <Text style={[common.errorText, { marginTop: header.height }]}>
+          {getErrorMessage(error)}
+        </Text>
       ) : (
         <FlatList
           data={data}
@@ -34,10 +46,13 @@ export default function ProductFlatList() {
           keyExtractor={(item) => String(item.id)}
           onEndReached={() => hasNextPage && !isFetchingNextPage && fetchNextPage()}
           onEndReachedThreshold={0.5}
-          onRefresh={refetch}
-          refreshing={false}
+          onScroll={header.onScroll}
+          scrollEventThrottle={16}
+          onRefresh={onRefresh}
+          refreshing={refreshing}
+          ListHeaderComponent={<ProductBanner topSpace={header.height} />}
           ListFooterComponent={isFetchingNextPage ? <ActivityIndicator /> : undefined}
-          // flex + maxWidth: supaya item ganjil di baris terakhir tidak melebar
+          // flex + maxWidth: so an odd item in the last row does not stretch
           renderItem={({ item }) => (
             <View style={productList.flatListColumn}>
               <ProductCard
@@ -50,6 +65,7 @@ export default function ProductFlatList() {
         />
       )}
 
+      <RefreshIndicator header={header} refreshing={refreshing} />
       <ResetCacheFab />
     </View>
   )

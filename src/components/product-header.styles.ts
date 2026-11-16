@@ -1,8 +1,10 @@
 import { StyleSheet } from 'react-native-unistyles'
 
 export const styles = StyleSheet.create((theme, rt) => ({
-  container: { paddingTop: rt.insets.top + 12, paddingHorizontal: 16, paddingBottom: 4, gap: 8 },
+  pinned: { paddingTop: rt.insets.top + 12, paddingHorizontal: 16, paddingBottom: 8 },
+  searchRow: { flexDirection: 'row', gap: 8 },
   search: {
+    flex: 1,
     borderWidth: 1,
     borderColor: '#8884',
     borderRadius: 10,
@@ -10,16 +12,28 @@ export const styles = StyleSheet.create((theme, rt) => ({
     paddingHorizontal: 12,
     color: theme.colors.text,
   },
-  tabs: { flexDirection: 'row', gap: 8 },
+  tabs: { flexDirection: 'row', gap: 8, paddingHorizontal: 16, paddingBottom: 8 },
+  filter: (active: boolean) => ({
+    width: 44,
+    height: 44,
+    borderRadius: 10,
+    alignItems: 'center' as const,
+    justifyContent: 'center' as const,
+    backgroundColor: active ? theme.colors.primary : theme.colors.muted,
+  }),
+  filterText: (active: boolean) => ({
+    fontSize: 18,
+    color: active ? theme.colors.onPrimary : theme.colors.text,
+  }),
   tab: (active: boolean) => ({
     paddingHorizontal: 12,
     paddingVertical: 6,
     borderRadius: 16,
-    overflow: 'hidden' as const,
-    backgroundColor: active ? theme.colors.primary : theme.colors.card,
+    backgroundColor: active ? theme.colors.primary : theme.colors.muted,
   }),
   tabText: (active: boolean) => ({
     fontWeight: '600' as const,
+    userSelect: 'none' as const,
     color: active ? theme.colors.onPrimary : theme.colors.text,
   }),
 }))

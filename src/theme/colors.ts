@@ -1,7 +1,8 @@
 export const lightTheme = {
   colors: {
-    background: '#f3f4f6',
+    background: '#ffffff',
     card: '#ffffff',
+    muted: '#f3f4f6',
     text: '#111827',
     mutedText: '#6b7280',
     primary: '#2563eb',
@@ -15,6 +16,7 @@ export const darkTheme = {
   colors: {
     background: '#0b0f14',
     card: '#1f2937',
+    muted: '#374151',
     text: '#f9fafb',
     mutedText: '#9ca3af',
     primary: '#3b82f6',
