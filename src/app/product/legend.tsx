@@ -4,10 +4,11 @@ import { ProductHeader } from '@/components/product-header'
 import { ResetCacheFab } from '@/components/reset-cache-fab'
 import { getErrorMessage } from '@/lib/axios'
 import { favoriteStore } from '@/store/favorite'
+import { common } from '@/styles/common'
+import { productList } from '@/styles/product-list'
 import { LegendList } from '@legendapp/list/react-native'
 import { useState } from 'react'
 import { ActivityIndicator, Text, View } from 'react-native'
-import { StyleSheet } from 'react-native-unistyles'
 
 // VERSI 3: LegendList (@legendapp/list)
 export default function ProductLegendList() {
@@ -19,13 +20,13 @@ export default function ProductLegendList() {
   const toggleFavorite = favoriteStore((s) => s.toggle)
 
   return (
-    <View style={styles.container}>
+    <View style={common.screen}>
       <ProductHeader search={search} onSearch={setSearch} active='LegendList' />
 
       {isLoading ? (
-        <ActivityIndicator style={styles.center} />
+        <ActivityIndicator style={common.center} />
       ) : error ? (
-        <Text style={styles.error}>{getErrorMessage(error)}</Text>
+        <Text style={common.errorText}>{getErrorMessage(error)}</Text>
       ) : (
         <LegendList
           data={data ?? []}
@@ -33,7 +34,7 @@ export default function ProductLegendList() {
           // estimasi tinggi kartu, dipakai sebelum item diukur
           estimatedItemSize={260}
           recycleItems
-          contentContainerStyle={styles.list}
+          contentContainerStyle={productList.content}
           keyExtractor={(item) => String(item.id)}
           onEndReached={() => hasNextPage && !isFetchingNextPage && fetchNextPage()}
           onEndReachedThreshold={0.5}
@@ -54,10 +55,3 @@ export default function ProductLegendList() {
     </View>
   )
 }
-
-const styles = StyleSheet.create((theme) => ({
-  container: { flex: 1, backgroundColor: theme.colors.background },
-  center: { marginTop: 32 },
-  error: { color: theme.colors.text, padding: 16 },
-  list: { paddingHorizontal: 10, paddingBottom: 16 },
-}))

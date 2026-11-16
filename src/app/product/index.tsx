@@ -4,9 +4,10 @@ import { ProductHeader } from '@/components/product-header'
 import { ResetCacheFab } from '@/components/reset-cache-fab'
 import { getErrorMessage } from '@/lib/axios'
 import { favoriteStore } from '@/store/favorite'
+import { common } from '@/styles/common'
+import { productList } from '@/styles/product-list'
 import { useState } from 'react'
 import { ActivityIndicator, FlatList, Text, View } from 'react-native'
-import { StyleSheet } from 'react-native-unistyles'
 
 // VERSI 1: FlatList bawaan React Native
 export default function ProductFlatList() {
@@ -18,18 +19,18 @@ export default function ProductFlatList() {
   const toggleFavorite = favoriteStore((s) => s.toggle)
 
   return (
-    <View style={styles.container}>
+    <View style={common.screen}>
       <ProductHeader search={search} onSearch={setSearch} active='FlatList' />
 
       {isLoading ? (
-        <ActivityIndicator style={styles.center} />
+        <ActivityIndicator style={common.center} />
       ) : error ? (
-        <Text style={styles.error}>{getErrorMessage(error)}</Text>
+        <Text style={common.errorText}>{getErrorMessage(error)}</Text>
       ) : (
         <FlatList
           data={data}
           numColumns={2}
-          contentContainerStyle={styles.list}
+          contentContainerStyle={productList.content}
           keyExtractor={(item) => String(item.id)}
           onEndReached={() => hasNextPage && !isFetchingNextPage && fetchNextPage()}
           onEndReachedThreshold={0.5}
@@ -38,7 +39,7 @@ export default function ProductFlatList() {
           ListFooterComponent={isFetchingNextPage ? <ActivityIndicator /> : undefined}
           // flex + maxWidth: supaya item ganjil di baris terakhir tidak melebar
           renderItem={({ item }) => (
-            <View style={styles.column}>
+            <View style={productList.flatListColumn}>
               <ProductCard
                 item={item}
                 isFavorite={favorites.includes(item.id)}
@@ -53,11 +54,3 @@ export default function ProductFlatList() {
     </View>
   )
 }
-
-const styles = StyleSheet.create((theme) => ({
-  container: { flex: 1, backgroundColor: theme.colors.background },
-  center: { marginTop: 32 },
-  error: { color: theme.colors.text, padding: 16 },
-  list: { paddingHorizontal: 10, paddingBottom: 16 },
-  column: { flex: 1, maxWidth: '50%' },
-}))
