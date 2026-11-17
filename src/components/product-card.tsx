@@ -1,6 +1,7 @@
 import type { Product } from '@/types/product'
 import { common } from '@/styles/common'
 import { Image } from 'expo-image'
+import { router } from 'expo-router'
 import { memo } from 'react'
 import { Pressable, Text, View } from 'react-native'
 import { styles } from './product-card.styles'
@@ -25,7 +26,10 @@ export const ProductCard = memo(function ProductCard({
 
   return (
     <View style={styles.cell}>
-      <View style={[common.card, styles.card]}>
+      <Pressable
+        style={[common.card, styles.card]}
+        onPress={() => router.push({ pathname: '/product/[id]', params: { id: item.id } })}
+      >
         <View>
           <Image source={item.thumbnail} style={styles.image} contentFit='contain' />
           {discount > 0 ? (
@@ -53,7 +57,7 @@ export const ProductCard = memo(function ProductCard({
           <Text style={styles.price}>${item.price}</Text>
           {discount > 0 ? <Text style={styles.originalPrice}>${originalPrice}</Text> : null}
         </View>
-      </View>
+      </Pressable>
     </View>
   )
 })

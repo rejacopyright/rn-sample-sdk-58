@@ -71,7 +71,7 @@ export function AppBottomSheet({ ref, title, children, footer, onDismiss }: Prop
       backgroundStyle={{ backgroundColor: theme.colors.card, borderRadius: SHEET_RADIUS }}
       onDismiss={onDismiss}
     >
-      <BottomSheetScrollView>
+      <BottomSheetScrollView showsVerticalScrollIndicator={false}>
         <View style={[styles.body, { paddingBottom: footer ? footerHeight + 16 : 16 }]}>
           {children}
         </View>

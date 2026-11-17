@@ -40,6 +40,7 @@ export default function ProductFlatList() {
         </Text>
       ) : (
         <FlatList
+          showsVerticalScrollIndicator={false}
           data={data}
           numColumns={2}
           contentContainerStyle={productList.content}

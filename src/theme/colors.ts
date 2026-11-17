@@ -9,6 +9,9 @@ export const lightTheme = {
     onPrimary: '#ffffff',
     danger: '#dc2626',
     border: '#e5e7eb',
+    // translucent button over images: dark in light mode, light in dark mode
+    overlay: 'rgba(0, 0, 0, 0.2)',
+    onOverlay: '#ffffff',
   },
 } as const
 
@@ -23,6 +26,8 @@ export const darkTheme = {
     onPrimary: '#ffffff',
     danger: '#f87171',
     border: '#374151',
+    overlay: 'rgba(255, 255, 255, 0.25)',
+    onOverlay: '#111827',
   },
 } as const
 

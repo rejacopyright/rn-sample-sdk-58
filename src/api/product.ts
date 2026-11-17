@@ -12,14 +12,11 @@ import { useEffect } from 'react'
 
 const PAGE_SIZE = 8
 
-// How long cached product data counts as fresh. While fresh, mounting a screen (or switching
-// between the list versions) reuses the cache and does NOT refetch.
-const PRODUCTS_STALE_TIME = 1000 * 60 * 5
-
 type ProductPages = InfiniteData<ProductList, number>
 
-// An infinite query refetches EVERY loaded page, one request each, once it is stale. Keeping only
-// the first page in the cache means a refetch (or a reload) always costs a single request and the
+// Queries never go stale (global `staleTime: Infinity`), so data only refetches on an explicit
+// refresh or invalidation. An infinite query then refetches EVERY loaded page, one request each.
+// Keeping only the first page in the cache means a refetch (or a reload) always costs a single request and the
 // list starts again from page 1.
 const keepFirstPage = (data?: ProductPages): ProductPages | undefined =>
   data && { pages: data.pages.slice(0, 1), pageParams: data.pageParams.slice(0, 1) }
@@ -67,7 +64,6 @@ export const getProducts = (params: Omit<ProductParams, 'skip' | 'limit'> = {}) 
       return next < last.total ? next : undefined
     },
     select: (data) => data.pages.flatMap((page) => page.products),
-    staleTime: PRODUCTS_STALE_TIME,
   })
 }
 
@@ -97,7 +93,6 @@ export const getProduct = (id?: number | string) => {
     queryFn: () => axios.get<Product>(`products/${id}`),
     select: ({ data }) => data,
     enabled: !!id,
-    staleTime: PRODUCTS_STALE_TIME,
   })
 }
 
@@ -107,7 +102,6 @@ export const getProductCategories = () => {
     queryKey: ['getProductCategories'],
     queryFn: () => axios.get<{ slug: string; name: string; url: string }[]>('products/categories'),
     select: ({ data }) => data,
-    staleTime: 1000 * 60 * 60,
   })
 }
 

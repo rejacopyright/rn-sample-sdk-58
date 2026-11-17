@@ -20,7 +20,8 @@ export default function QueryProvider({ children }: PropsWithChildren) {
             refetchOnReconnect: false,
             retry: false,
             gcTime: 1000 * 60 * 60 * 12, // 12 hours
-            // staleTime: Infinity,
+            // Never stale: refetch only on explicit refresh or invalidation (see mutations)
+            staleTime: Infinity,
             throwOnError: false,
           },
         },

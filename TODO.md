@@ -33,10 +33,14 @@ Practice project: Expo SDK 58, React Native 0.88 (New Architecture), Expo Router
 - [x] Bottom sheet with `@gorhom/bottom-sheet` (`AppBottomSheet`) and a category filter sheet
 - [x] All project content (code, comments, UI text, docs) written in English
 
+### Product detail
+- [x] Product detail screen (`product/[id].tsx`) with `getProduct` and `useLocalSearchParams`
+- [x] Product cards open the detail screen: image carousel, price/discount, stock, tags, favorite toggle
+- [x] Full-screen image viewer (`ImageViewer`): swipe between images, pinch and double tap to zoom, drag down to close
+
 ## Not done yet
 
 ### Priority 1: core exercises
-- [ ] Product detail screen (`product/[id].tsx`) with `getProduct` and `useLocalSearchParams`
 - [ ] Login against `dummyjson.com/auth/login` that fills `authStore`
 - [ ] Protected routes (`Stack.Protected`) and logout from the Profile screen
 - [ ] Store the token in `expo-secure-store` instead of AsyncStorage
@@ -49,7 +53,7 @@ Practice project: Expo SDK 58, React Native 0.88 (New Architecture), Expo Router
 - [ ] Save and restore scroll position (`scrollStore`)
 - [ ] Verify the category filter flow end to end (open sheet, pick a category, list updates, clear filter)
 - [ ] Optimistic updates for mutations
-- [ ] Tune `staleTime` per query and `partialize` in the zustand persist
+- [ ] Tune `partialize` in the zustand persist
 - [ ] Animations and gestures with `reanimated` and `gesture-handler`
 - [ ] Keyboard handling on screens with forms (and a bottom sheet with a text input)
 

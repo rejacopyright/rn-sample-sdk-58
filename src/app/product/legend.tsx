@@ -41,6 +41,7 @@ export default function ProductLegendList() {
         </Text>
       ) : (
         <LegendList
+          showsVerticalScrollIndicator={false}
           data={data ?? []}
           numColumns={2}
           // estimated card height, used before the item is measured

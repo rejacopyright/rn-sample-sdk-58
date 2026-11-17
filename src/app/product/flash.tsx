@@ -41,6 +41,7 @@ export default function ProductFlashList() {
         </Text>
       ) : (
         <FlashList
+          showsVerticalScrollIndicator={false}
           data={data}
           numColumns={2}
           contentContainerStyle={productList.content}

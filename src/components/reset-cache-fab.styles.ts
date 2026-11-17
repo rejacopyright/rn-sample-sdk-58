@@ -1,7 +1,5 @@
 import { StyleSheet } from 'react-native-unistyles'
-
-// Default iOS tab bar height (screen content extends underneath it)
-const TAB_BAR_HEIGHT = 49
+import { TAB_BAR_HEIGHT } from '@/styles/layout'
 
 export const styles = StyleSheet.create((theme, rt) => ({
   fab: {
