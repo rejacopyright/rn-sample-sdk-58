@@ -14,7 +14,7 @@ export const productDetail = StyleSheet.create((theme, rt) => ({
   body: { padding: 16, gap: 8 },
   topRow: { flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between' },
   category: { color: theme.colors.mutedText, fontSize: 12, textTransform: 'uppercase' },
-  heart: { fontSize: 28, color: theme.colors.text },
+  ratingRow: { flexDirection: 'row', alignItems: 'center', gap: 4 },
   title: { color: theme.colors.text, fontSize: 22, fontWeight: '700' },
   brand: { color: theme.colors.mutedText, fontSize: 14 },
   priceRow: { flexDirection: 'row', alignItems: 'baseline', gap: 8 },

@@ -3,7 +3,9 @@ import { common } from '@/styles/common'
 import { Image } from 'expo-image'
 import { router } from 'expo-router'
 import { memo } from 'react'
+import { Heart, Star } from 'phosphor-react-native'
 import { Pressable, Text, View } from 'react-native'
+import { useUnistyles } from 'react-native-unistyles'
 import { styles } from './product-card.styles'
 
 type Props = {
@@ -20,6 +22,8 @@ export const ProductCard = memo(function ProductCard({
   isFavorite,
   onToggleFavorite,
 }: Props) {
+  const { theme } = useUnistyles()
+  const heartColor = isFavorite ? theme.colors.danger : theme.colors.text
   const discount = Math.round(item.discountPercentage)
   // dummyjson `price` is already discounted, so derive the original price from the percentage
   const originalPrice = (item.price / (1 - item.discountPercentage / 100)).toFixed(2)
@@ -38,7 +42,7 @@ export const ProductCard = memo(function ProductCard({
             </View>
           ) : null}
           <Pressable style={styles.heartButton} onPress={() => onToggleFavorite(item.id)}>
-            <Text style={styles.heart}>{isFavorite ? '♥' : '♡'}</Text>
+            <Heart size={22} color={heartColor} weight={isFavorite ? 'fill' : 'duotone'} />
           </Pressable>
         </View>
         <Text style={styles.category} numberOfLines={1}>
@@ -48,7 +52,10 @@ export const ProductCard = memo(function ProductCard({
           {item.title}
         </Text>
         <View style={styles.meta}>
-          <Text style={styles.rating}>★ {item.rating.toFixed(1)}</Text>
+          <View style={styles.ratingRow}>
+            <Star size={13} color={theme.colors.star} weight='fill' />
+            <Text style={styles.rating}>{item.rating.toFixed(1)}</Text>
+          </View>
           {item.stock < LOW_STOCK ? (
             <Text style={styles.lowStock}>Only {item.stock} left</Text>
           ) : null}

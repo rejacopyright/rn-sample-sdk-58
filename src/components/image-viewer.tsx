@@ -1,3 +1,4 @@
+import { X } from 'phosphor-react-native'
 import { useState } from 'react'
 import { FlatList, Modal, Pressable, Text, View, useWindowDimensions } from 'react-native'
 import { GestureHandlerRootView } from 'react-native-gesture-handler'
@@ -76,8 +77,7 @@ function Viewer({ images, initialIndex, onClose }: ViewerProps) {
 
       <FadeOnDrag dragY={dragY} style={styles.fill} pointerEvents='box-none'>
         <Pressable accessibilityLabel='Close' style={styles.close} onPress={close}>
-          <View style={[styles.closeBar, { transform: [{ rotate: '45deg' }] }]} />
-          <View style={[styles.closeBar, { transform: [{ rotate: '-45deg' }] }]} />
+          <X size={20} color='#fff' weight='bold' />
         </Pressable>
       </FadeOnDrag>
     </GestureHandlerRootView>

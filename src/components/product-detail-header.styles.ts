@@ -28,16 +28,5 @@ export const styles = StyleSheet.create((theme, rt) => ({
     justifyContent: 'center',
     backgroundColor: theme.colors.overlay,
   },
-  // chevron drawn with two borders of a rotated square, so it centers exactly (no font metrics)
-  backIcon: {
-    width: 11,
-    height: 11,
-    borderLeftWidth: 2.5,
-    borderBottomWidth: 2.5,
-    borderColor: theme.colors.onOverlay,
-    transform: [{ rotate: '45deg' }],
-    // the rotated square's visual center sits left of its box, so nudge it back
-    marginLeft: 4,
-  },
   title: { flex: 1, color: theme.colors.text, fontSize: 16, fontWeight: '600' },
 }))

@@ -7,6 +7,7 @@ import { common } from '@/styles/common'
 import { productDetail as styles } from '@/styles/product-detail'
 import { Image } from 'expo-image'
 import { useLocalSearchParams } from 'expo-router'
+import { Heart, Star } from 'phosphor-react-native'
 import { useRef, useState } from 'react'
 import {
   ActivityIndicator,
@@ -25,7 +26,7 @@ const LOW_STOCK = 10
 
 export default function ProductDetail() {
   const { id } = useLocalSearchParams<{ id: string }>()
-  const { rt } = useUnistyles()
+  const { rt, theme } = useUnistyles()
   const { data: product, isLoading, error } = getProduct(id)
   const isFavorite = favoriteStore((s) => (product ? s.ids.includes(product.id) : false))
   const toggleFavorite = favoriteStore((s) => s.toggle)
@@ -107,7 +108,11 @@ export default function ProductDetail() {
               accessibilityLabel={isFavorite ? 'Remove from favorites' : 'Add to favorites'}
               onPress={() => toggleFavorite(product.id)}
             >
-              <Text style={styles.heart}>{isFavorite ? '♥' : '♡'}</Text>
+              <Heart
+                size={28}
+                color={isFavorite ? theme.colors.danger : theme.colors.text}
+                weight={isFavorite ? 'fill' : 'duotone'}
+              />
             </Pressable>
           </View>
           <Text style={styles.title}>{product.title}</Text>
@@ -126,7 +131,10 @@ export default function ProductDetail() {
           </View>
 
           <View style={styles.meta}>
-            <Text style={common.textBold}>★ {product.rating.toFixed(1)}</Text>
+            <View style={styles.ratingRow}>
+              <Star size={16} color={theme.colors.star} weight='fill' />
+              <Text style={common.textBold}>{product.rating.toFixed(1)}</Text>
+            </View>
             <Text style={styles.stock(product.stock < LOW_STOCK)}>
               {product.stock < LOW_STOCK
                 ? `Only ${product.stock} left`

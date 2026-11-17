@@ -31,12 +31,4 @@ export const styles = StyleSheet.create((_theme, rt) => ({
     justifyContent: 'center',
     backgroundColor: 'rgba(255, 255, 255, 0.2)',
   },
-  // X drawn with two rotated bars so it centers exactly (no font metrics)
-  closeBar: {
-    position: 'absolute',
-    width: 18,
-    height: 2.5,
-    borderRadius: 2,
-    backgroundColor: '#fff',
-  },
 }))

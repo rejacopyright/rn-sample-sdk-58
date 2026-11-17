@@ -20,6 +20,5 @@ export const styles = StyleSheet.create((theme, rt) => ({
     shadowOffset: { width: 0, height: 3 },
     elevation: 6,
   },
-  icon: { color: theme.colors.onPrimary, fontSize: 18, lineHeight: 22 },
   text: { color: theme.colors.onPrimary, fontWeight: '700' },
 }))

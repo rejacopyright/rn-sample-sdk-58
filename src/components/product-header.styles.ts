@@ -21,10 +21,6 @@ export const styles = StyleSheet.create((theme, rt) => ({
     justifyContent: 'center' as const,
     backgroundColor: active ? theme.colors.primary : theme.colors.muted,
   }),
-  filterText: (active: boolean) => ({
-    fontSize: 18,
-    color: active ? theme.colors.onPrimary : theme.colors.text,
-  }),
   tab: (active: boolean) => ({
     paddingHorizontal: 12,
     paddingVertical: 6,
